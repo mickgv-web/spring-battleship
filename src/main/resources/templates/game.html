@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Battleships</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+    <style>
+
+        #board{
+        display:grid;
+        grid-template-columns: repeat(10,40px);
+        grid-gap:3px;
+        margin-top:20px;
+        }
+
+        .cell{
+        width:40px;
+        height:40px;
+        background:#eee;
+        border:1px solid #444;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        cursor:pointer;
+        }
+
+        .hit{
+        background:red;
+        }
+
+        .miss{
+        background:lightblue;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h2>Battleships</h2>
+
+<p>Game code: <span th:text="${game.code}"></span></p>
+
+<div id="board"></div>
+
+<script th:inline="javascript">
+
+    let gameId = [[${game.id}]];
+
+    let stompClient = null;
+
+    function connect(){
+
+        const socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function(){
+
+            console.log("Connected");
+
+            stompClient.subscribe('/topic/game', function(message){
+
+                console.log("RAW MESSAGE:", message.body);
+
+                const data = JSON.parse(message.body);
+
+                console.log("PARSED:", data);
+
+                updateCell(data.x, data.y, data.result);
+
+            });
+
+        });
+
+    }
+
+    function fire(x,y){
+
+        stompClient.send("/app/fire",{},JSON.stringify({
+            gameId:gameId,
+            x:x,
+            y:y
+        }));
+
+    }
+
+    function createBoard(){
+
+        const board = document.getElementById("board");
+
+        for(let x=0;x<10;x++){
+
+            for(let y=0;y<10;y++){
+
+                const cell=document.createElement("div");
+
+                cell.classList.add("cell");
+
+                cell.dataset.x=x;
+                cell.dataset.y=y;
+
+                cell.onclick=function(){
+
+                    fire(x,y);
+
+                }
+
+                board.appendChild(cell);
+
+            }
+
+        }
+
+    }
+
+    function updateCell(x,y,result){
+
+        console.log("Update:",x,y,result);
+
+        const cells=document.querySelectorAll(".cell");
+
+        cells.forEach(c=>{
+
+            if(c.dataset.x==x && c.dataset.y==y){
+
+                if(result==="HIT"){
+                    c.classList.add("hit");
+                }else if(result==="MISS"){
+                    c.classList.add("miss");
+                }
+
+            }
+
+        });
+
+    }
+
+    createBoard();
+    connect();
+
+</script>
+
+</body>
+</html>
