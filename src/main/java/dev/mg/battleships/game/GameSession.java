@@ -40,6 +40,19 @@ public class GameSession {
         return board.placeShip(x, y, size, direction);
     }
 
+    public Board getBoardForPlayer(Long playerId) {
+
+        if (playerId.equals(player1Id)) {
+            return player1Board;
+        }
+
+        if (playerId.equals(player2Id)) {
+            return player2Board;
+        }
+
+        return null;
+    }
+
     public Cell fire(Long playerId, int x, int y) {
 
         if (!playerId.equals(currentTurnPlayerId)) {
@@ -50,7 +63,20 @@ public class GameSession {
 
         Cell result = opponentBoard.fire(x, y);
 
-        switchTurn();
+        // evitar disparar dos veces
+        if (result == Cell.HIT || result == Cell.MISS) {
+
+            if (result == Cell.HIT && opponentBoard.isShipSunk(x, y)) {
+                result = Cell.SUNK;
+            }
+
+            // solo cambiar turno si el juego no terminó
+            if (!isGameOver()) {
+                switchTurn();
+            }
+
+            return result;
+        }
 
         return result;
     }

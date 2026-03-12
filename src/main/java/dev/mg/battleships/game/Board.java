@@ -80,4 +80,44 @@ public class Board {
         return true;
     }
 
+    public Cell[][] getGrid() {
+        return grid;
+    }
+
+    public boolean isShipSunk(int x, int y) {
+
+        if (grid[x][y] != Cell.HIT) {
+            return false;
+        }
+
+        boolean[][] visited = new boolean[SIZE][SIZE];
+
+        return !hasRemainingShipCells(x, y, visited);
+    }
+
+    private boolean hasRemainingShipCells(int x, int y, boolean[][] visited) {
+
+        if (!isInside(x, y)) return false;
+
+        if (visited[x][y]) return false;
+
+        if (grid[x][y] != Cell.HIT && grid[x][y] != Cell.SHIP) return false;
+
+        visited[x][y] = true;
+
+        if (grid[x][y] == Cell.SHIP) {
+            return true;
+        }
+
+        return hasRemainingShipCells(x + 1, y, visited)
+                || hasRemainingShipCells(x - 1, y, visited)
+                || hasRemainingShipCells(x, y + 1, visited)
+                || hasRemainingShipCells(x, y - 1, visited);
+    }
+
+    private boolean isInside(int x, int y) {
+
+        return x >= 0 && x < SIZE && y >= 0 && y < SIZE;
+    }
+
 }

@@ -1,0 +1,39 @@
+#boards{
+    display:flex;
+    gap:40px;
+}
+
+.board-container{
+    display:flex;
+    flex-direction:column;
+}
+
+#player-board,
+#enemy-board{
+    display:grid;
+    grid-template-columns: repeat(10,40px);
+    grid-gap:3px;
+}
+
+.cell{
+    width:40px;
+    height:40px;
+    background:#eee;
+    border:1px solid #444;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+.hit{
+    background:red;
+}
+
+.miss{
+    background:lightblue;
+}
+
+.ship{
+    background:#666;
+}

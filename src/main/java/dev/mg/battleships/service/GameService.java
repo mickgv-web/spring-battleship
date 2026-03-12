@@ -1,9 +1,14 @@
 package dev.mg.battleships.service;
 
+import dev.mg.battleships.dto.BoardStateEvent;
 import dev.mg.battleships.entity.*;
+import dev.mg.battleships.game.Cell;
+import dev.mg.battleships.game.GameSession;
 import dev.mg.battleships.repository.GameRepository;
 import dev.mg.battleships.game.GameManager;
+import dev.mg.battleships.dto.GameEvent;
 
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,10 +21,16 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final GameManager gameManager;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public GameService(GameRepository gameRepository, GameManager gameManager) {
+    public GameService(
+            GameRepository gameRepository,
+            GameManager gameManager,
+            SimpMessagingTemplate messagingTemplate) {
+
         this.gameRepository = gameRepository;
         this.gameManager = gameManager;
+        this.messagingTemplate = messagingTemplate;
     }
 
     public List<Game> findOpenGames() {
@@ -44,9 +55,8 @@ public class GameService {
 
     public Game joinGame(Game game, User guest) {
 
-
         if (game.getGuest() != null) {
-            throw new RuntimeException("Game already has two players");
+            throw new RuntimeException("Game already full");
         }
 
         game.setGuest(guest);
@@ -54,14 +64,50 @@ public class GameService {
 
         Game savedGame = gameRepository.save(game);
 
-        System.out.println("Creating GameSession for game " + savedGame.getId());
-
-        // Crear sesión del juego en memoria
-        gameManager.createSession(
+        GameSession session = gameManager.createSession(
                 savedGame.getId(),
                 savedGame.getHost().getId(),
                 guest.getId()
         );
+
+        BoardStateEvent hostBoard =
+                new BoardStateEvent(
+                        session.getBoardForPlayer(savedGame.getHost().getId()).getGrid(),
+                        session.getCurrentTurnPlayerId()
+                );
+
+        BoardStateEvent guestBoard =
+                new BoardStateEvent(
+                        session.getBoardForPlayer(guest.getId()).getGrid(),
+                        session.getCurrentTurnPlayerId()
+                );
+
+        messagingTemplate.convertAndSendToUser(
+                savedGame.getHost().getUsername(),
+                "/queue/board",
+                hostBoard
+        );
+
+        messagingTemplate.convertAndSendToUser(
+                guest.getUsername(),
+                "/queue/board",
+                guestBoard
+        );
+
+        messagingTemplate.convertAndSend(
+                "/topic/game/" + savedGame.getId(),
+                new GameEvent("PLAYER_JOINED")
+        );
+
+        System.out.println("HOST BOARD:");
+        Cell[][] hostGrid = session.getBoardForPlayer(savedGame.getHost().getId()).getGrid();
+
+        for(int i=0;i<10;i++){
+            for(int j=0;j<10;j++){
+                System.out.print(hostGrid[i][j] + " ");
+            }
+            System.out.println();
+        }
 
         return savedGame;
     }

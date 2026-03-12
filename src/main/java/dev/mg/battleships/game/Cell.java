@@ -5,6 +5,7 @@ public enum Cell {
     EMPTY,
     SHIP,
     HIT,
-    MISS
+    MISS,
+    SUNK
 
 }

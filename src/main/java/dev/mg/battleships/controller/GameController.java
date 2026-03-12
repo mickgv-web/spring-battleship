@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/games")
 public class GameController {
@@ -53,12 +55,18 @@ public class GameController {
     }
 
     @GetMapping("/{code}")
-    public String game(@PathVariable String code, Model model) {
+    public String game(@PathVariable String code,
+                       Principal principal,
+                       Model model) {
 
         Game game = gameService.findByCode(code)
-                .orElseThrow(() -> new RuntimeException("Game not found"));
+                .orElseThrow();
+
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow();
 
         model.addAttribute("game", game);
+        model.addAttribute("playerId", user.getId());
 
         return "game";
     }
