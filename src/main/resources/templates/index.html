@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/base :: head('Battleships')"></head>
+
+<body>
+
+<div th:replace="layout/base :: layout(~{::section})">
+
+    <section>
+        <div class="landing-bg"></div>
+        <div class="radar-sweep"></div>
+        <div class="radar-contacts"></div>
+
+        <main class="container landing">
+
+            <div class="landing-panel">
+
+                <h1 class="landing-title">BATTLESHIPS</h1>
+
+                <p class="landing-subtitle">
+                    Multiplayer naval combat
+                </p>
+
+                <div class="landing-actions">
+
+                    <a th:href="@{/login}" class="btn-primary">
+                        Login
+                    </a>
+
+                    <a th:href="@{/register}" class="btn-secondary">
+                        Register
+                    </a>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </section>
+
+</div>
+
+</body>
+</html>

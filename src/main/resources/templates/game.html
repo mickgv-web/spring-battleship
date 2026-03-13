@@ -1,45 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <title>Battleships</title>
-
-    <link rel="stylesheet" th:href="@{/css/game.css}">
-
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
-
-</head>
+<head th:replace="~{layout/base :: head('Game')}"></head>
 
 <body>
 
-<h2>Battleships</h2>
+<div th:replace="~{layout/base :: layout(~{::section})}">
 
-<p>Game code: <span th:text="${game.code}"></span></p>
+    <section>
 
-<div id="game-status"></div>
+        <div class="panel">
 
-<div id="boards">
+            <div class="game-info">
 
-    <div class="board-container">
-        <h3>Your Board</h3>
-        <div id="player-board"></div>
-    </div>
+                <div class="game-code">
+                    Game code:
+                    <span th:text="${game.code}"></span>
+                </div>
 
-    <div class="board-container">
-        <h3>Enemy Board</h3>
-        <div id="enemy-board"></div>
-    </div>
+                <div class="connection-status">
+                    WebSocket: CONNECTED
+                </div>
+
+            </div>
+
+            <div id="game-status" class="turn-indicator"></div>
+
+        </div>
+
+
+        <div class="boards">
+
+            <div class="board-container">
+
+                <h3>Your Fleet</h3>
+
+                <div id="player-board"></div>
+
+            </div>
+
+            <div class="board-container">
+
+                <h3>Enemy Waters</h3>
+
+                <div id="enemy-board"></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel event-log">
+
+            <div class="panel-title">Game Events</div>
+
+            <div id="event-log" class="event-list"></div>
+
+        </div>
+
+    </section>
 
 </div>
 
+
 <script th:inline="javascript">
+
     window.gameConfig = {
         gameId: [[${game.id}]],
         status: [[${game.status}]],
         playerId: [[${playerId}]]
     };
+
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 
 <script th:src="@{/js/websocket.js}"></script>
 <script th:src="@{/js/board.js}"></script>

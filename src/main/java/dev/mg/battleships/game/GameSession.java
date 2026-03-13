@@ -1,6 +1,7 @@
 package dev.mg.battleships.game;
 
 import lombok.Getter;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 public class GameSession {
@@ -15,6 +16,7 @@ public class GameSession {
 
     private Long currentTurnPlayerId;
 
+
     public GameSession(Long gameId, Long player1Id, Long player2Id) {
 
         this.gameId = gameId;
@@ -25,8 +27,15 @@ public class GameSession {
         this.player1Board = new Board();
         this.player2Board = new Board();
 
-        placeDefaultShips(player1Board);
-        placeDefaultShips(player2Board);
+        int layout1 = ThreadLocalRandom.current().nextInt(6);
+        int layout2;
+
+        do {
+            layout2 = ThreadLocalRandom.current().nextInt(6);
+        } while(layout2 == layout1);
+
+        placeDefaultShips(player1Board, layout1);
+        placeDefaultShips(player2Board, layout2);
 
         this.currentTurnPlayerId = player1Id;
     }
@@ -125,13 +134,59 @@ public class GameSession {
 
     }
 
-    private void placeDefaultShips(Board board) {
+    private void placeDefaultShips(Board board, int layout) {
 
-        board.placeShip(0,0,5,Direction.HORIZONTAL);
-        board.placeShip(2,2,4,Direction.VERTICAL);
-        board.placeShip(5,5,3,Direction.HORIZONTAL);
-        board.placeShip(7,3,3,Direction.VERTICAL);
-        board.placeShip(9,0,2,Direction.HORIZONTAL);
+        switch (layout) {
+
+            case 0 -> {
+                board.placeShip(0,0,5,Direction.HORIZONTAL);
+                board.placeShip(2,2,4,Direction.VERTICAL);
+                board.placeShip(5,5,3,Direction.HORIZONTAL);
+                board.placeShip(7,3,3,Direction.VERTICAL);
+                board.placeShip(9,0,2,Direction.HORIZONTAL);
+            }
+
+            case 1 -> {
+                board.placeShip(1,1,5,Direction.VERTICAL);
+                board.placeShip(3,5,4,Direction.HORIZONTAL);
+                board.placeShip(6,2,3,Direction.VERTICAL);
+                board.placeShip(8,6,3,Direction.HORIZONTAL);
+                board.placeShip(0,8,2,Direction.VERTICAL);
+            }
+
+            case 2 -> {
+                board.placeShip(0,4,5,Direction.VERTICAL);
+                board.placeShip(4,0,4,Direction.HORIZONTAL);
+                board.placeShip(6,6,3,Direction.HORIZONTAL);
+                board.placeShip(8,2,3,Direction.VERTICAL);
+                board.placeShip(9,7,2,Direction.HORIZONTAL);
+            }
+
+            case 3 -> {
+                board.placeShip(2,0,5,Direction.HORIZONTAL);
+                board.placeShip(5,4,4,Direction.VERTICAL);
+                board.placeShip(7,1,3,Direction.HORIZONTAL);
+                board.placeShip(0,7,3,Direction.VERTICAL);
+                board.placeShip(9,5,2,Direction.HORIZONTAL);
+            }
+
+            case 4 -> {
+                board.placeShip(0,9,5,Direction.VERTICAL);
+                board.placeShip(3,3,4,Direction.HORIZONTAL);
+                board.placeShip(5,0,3,Direction.VERTICAL);
+                board.placeShip(8,5,3,Direction.HORIZONTAL);
+                board.placeShip(6,8,2,Direction.VERTICAL);
+            }
+
+            case 5 -> {
+                board.placeShip(4,0,5,Direction.HORIZONTAL);
+                board.placeShip(0,2,4,Direction.VERTICAL);
+                board.placeShip(7,6,3,Direction.HORIZONTAL);
+                board.placeShip(3,8,3,Direction.VERTICAL);
+                board.placeShip(9,3,2,Direction.HORIZONTAL);
+            }
+
+        }
 
     }
 }

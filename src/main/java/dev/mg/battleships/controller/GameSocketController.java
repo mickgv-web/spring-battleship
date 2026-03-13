@@ -53,8 +53,9 @@ public class GameSocketController {
                         session.getCurrentTurnPlayerId()
                 );
 
-        messagingTemplate.convertAndSend(
-                "/topic/game/" + request.getGameId(),
+        messagingTemplate.convertAndSendToUser(
+                username,
+                "/queue/board",
                 board
         );
     }

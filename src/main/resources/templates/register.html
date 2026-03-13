@@ -1,22 +1,45 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Register</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/base :: head('Register')}"></head>
+
 <body>
 
-<h2>Register</h2>
+<div th:replace="~{layout/base :: layout(~{::section})}">
 
-<form method="post" action="/register" th:action="@{/register}">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <section>
 
-    <input type="text" name="username" placeholder="username"/>
-    <input type="password" name="password" placeholder="password"/>
+        <div class="panel auth-panel">
 
-    <button type="submit">Register</button>
-</form>
+            <div class="panel-title">Create Account</div>
 
-<a href="/login">Login</a>
+            <form method="post" th:action="@{/register}">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}" />
+
+                <div class="form-group">
+                    <input type="text" name="username" placeholder="username"/>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="password"/>
+                </div>
+
+                <button class="btn" type="submit">Register</button>
+
+            </form>
+
+            <br>
+
+            <a th:href="@{/login}">Login</a>
+
+        </div>
+
+    </section>
+
+</div>
 
 </body>
 </html>

@@ -1,39 +1,2912 @@
-#boards{
+/* =========================================================
+   BATTLESHIPS UI THEME
+   Naval Tactical Dark UI
+========================================================= */
+
+
+/* =========================================================
+   FONTS
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap');
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+
+    --bg-main: #0b1c2c;
+    --bg-panel: #12283a;
+    --bg-panel-soft: #152f45;
+
+    --board-water: #1a3b55;
+    --board-line: #2f6c8f;
+
+    --accent: #ff8c32;
+    --accent-hover: #ff9d4d;
+
+    --hit: #f4b942;
+    --miss: #7fb3d5;
+    --sunk: #e63946;
+
+    --success: #2ecc71;
+
+    --text-main: #e6edf3;
+    --text-dim: #9fb3c8;
+
+}
+
+
+/* =========================================================
+   RESET / GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+    padding: 0;
+
+    font-family: "Inter", sans-serif;
+
+    color: var(--text-main);
+
+    background:
+        radial-gradient(circle at top, #112c42, #081521);
+
+    min-height: 100vh;
+
+}
+
+
+
+/* =========================================================
+   APP SHELL
+========================================================= */
+
+.app-container{
+
+    max-width:1100px;
+    margin:auto;
+
+    padding:20px;
+
+}
+
+main{
+
+    min-height:60vh;
+
+}
+
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.app-header{
+
+    position:sticky;
+    top:0;
+
+    background:rgba(10,25,40,0.9);
+
+    border-bottom:1px solid rgba(100,180,255,0.25);
+
+    backdrop-filter:blur(6px);
+
+    margin-bottom:30px;
+
+}
+
+.nav-container{
+
+    max-width:1100px;
+    margin:auto;
+
+    padding:14px 20px;
+
     display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+.app-title a{
+
+    font-family:"Orbitron";
+
+    font-size:22px;
+
+    letter-spacing:4px;
+
+    text-decoration:none;
+
+    color:#9fdcff;
+
+}
+
+.app-title a:hover{
+
+    text-shadow:0 0 6px rgba(0,200,255,0.6);
+
+}
+
+
+
+/* =========================================================
+   USER AREA
+========================================================= */
+
+.nav-user{
+
+    display:flex;
+    align-items:center;
+
+    gap:16px;
+
+}
+
+.nav-username{
+
+    color:#7fb3d5;
+    font-size:14px;
+
+}
+
+.logout-form{
+
+    margin:0;
+
+}
+
+.nav-logout{
+
+    padding:8px 16px;
+    font-size:13px;
+
+}
+
+
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.panel{
+
+    background:var(--bg-panel);
+
+    border:1px solid var(--board-line);
+
+    border-radius:8px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.6);
+
+}
+
+.panel-title{
+
+    font-family:"Orbitron";
+
+    font-size:16px;
+
+    margin-bottom:12px;
+
+    color:var(--accent);
+
+}
+
+.panel-description{
+
+    color:#7fb3d5;
+
+    margin-bottom:20px;
+
+}
+
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn{
+
+    background:linear-gradient(
+        var(--accent-hover),
+        var(--accent)
+    );
+
+    border:1px solid #d46d1f;
+
+    border-radius:6px;
+
+    padding:10px 16px;
+
+    font-family:"Orbitron";
+
+    font-size:14px;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.3),
+        0 4px 8px rgba(0,0,0,0.6);
+
+    transition:all 0.15s ease;
+
+}
+
+.btn:hover{
+
+    filter:brightness(1.1);
+
+}
+
+.btn:active{
+
+    transform:translateY(2px);
+
+}
+
+
+/* button variants */
+
+.btn-primary{
+
+    padding:14px 34px;
+
+    background:var(--accent);
+
+    border-radius:6px;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,0.4);
+
+}
+
+.btn-primary:hover{
+
+    background:var(--accent-hover);
+
+}
+
+.btn-secondary{
+
+    padding:14px 34px;
+
+    background:#1e3a5a;
+
+    border-radius:6px;
+
+    color:#9cc9ff;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+}
+
+.btn-join{
+
+    background:#1e5a9c;
+
+    padding:10px 24px;
+
+}
+
+.btn-join:hover{
+
+    background:#2f78c7;
+
+}
+
+
+
+/* =========================================================
+   FORMS
+========================================================= */
+
+.form-group{
+
+    margin-bottom:15px;
+
+}
+
+input{
+
+    width:100%;
+
+    padding:10px;
+
+    border-radius:6px;
+
+    border:1px solid #2f6c8f;
+
+    background:#0e2436;
+
+    color:white;
+
+}
+
+input:focus{
+
+    outline:none;
+
+    border-color:var(--accent);
+
+}
+
+
+
+/* =========================================================
+   AUTH PANEL
+========================================================= */
+
+.auth-panel{
+
+    max-width:380px;
+
+    margin:auto;
+
+}
+
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.app-footer{
+
+    text-align:center;
+
+    margin-top:30px;
+
+    font-size:12px;
+
+    color:var(--text-dim);
+
+}
+
+/* =========================================================
+   BATTLESHIPS UI THEME
+   Naval Tactical Dark UI
+========================================================= */
+
+
+/* =========================================================
+   FONTS
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap');
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+
+    --bg-main: #0b1c2c;
+    --bg-panel: #12283a;
+    --bg-panel-soft: #152f45;
+
+    --board-water: #1a3b55;
+    --board-line: #2f6c8f;
+
+    --accent: #ff8c32;
+    --accent-hover: #ff9d4d;
+
+    --hit: #f4b942;
+    --miss: #7fb3d5;
+    --sunk: #e63946;
+
+    --success: #2ecc71;
+
+    --text-main: #e6edf3;
+    --text-dim: #9fb3c8;
+
+}
+
+
+/* =========================================================
+   RESET / GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+    padding: 0;
+
+    font-family: "Inter", sans-serif;
+
+    color: var(--text-main);
+
+    background:
+        radial-gradient(circle at top, #112c42, #081521);
+
+    min-height: 100vh;
+
+}
+
+
+
+/* =========================================================
+   APP SHELL
+========================================================= */
+
+.app-container{
+
+    max-width:1100px;
+    margin:auto;
+
+    padding:20px;
+
+}
+
+main{
+
+    min-height:60vh;
+
+}
+
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.app-header{
+
+    position:sticky;
+    top:0;
+
+    background:rgba(10,25,40,0.9);
+
+    border-bottom:1px solid rgba(100,180,255,0.25);
+
+    backdrop-filter:blur(6px);
+
+    margin-bottom:30px;
+
+}
+
+.nav-container{
+
+    max-width:1100px;
+    margin:auto;
+
+    padding:14px 20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+.app-title a{
+
+    font-family:"Orbitron";
+
+    font-size:22px;
+
+    letter-spacing:4px;
+
+    text-decoration:none;
+
+    color:#9fdcff;
+
+}
+
+.app-title a:hover{
+
+    text-shadow:0 0 6px rgba(0,200,255,0.6);
+
+}
+
+
+
+/* =========================================================
+   USER AREA
+========================================================= */
+
+.nav-user{
+
+    display:flex;
+    align-items:center;
+
+    gap:16px;
+
+}
+
+.nav-username{
+
+    color:#7fb3d5;
+    font-size:14px;
+
+}
+
+.logout-form{
+
+    margin:0;
+
+}
+
+.nav-logout{
+
+    padding:8px 16px;
+    font-size:13px;
+
+}
+
+
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.panel{
+
+    background:var(--bg-panel);
+
+    border:1px solid var(--board-line);
+
+    border-radius:8px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.6);
+
+}
+
+.panel-title{
+
+    font-family:"Orbitron";
+
+    font-size:16px;
+
+    margin-bottom:12px;
+
+    color:var(--accent);
+
+}
+
+.panel-description{
+
+    color:#7fb3d5;
+
+    margin-bottom:20px;
+
+}
+
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn{
+
+    background:linear-gradient(
+        var(--accent-hover),
+        var(--accent)
+    );
+
+    border:1px solid #d46d1f;
+
+    border-radius:6px;
+
+    padding:10px 16px;
+
+    font-family:"Orbitron";
+
+    font-size:14px;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.3),
+        0 4px 8px rgba(0,0,0,0.6);
+
+    transition:all 0.15s ease;
+
+}
+
+.btn:hover{
+
+    filter:brightness(1.1);
+
+}
+
+.btn:active{
+
+    transform:translateY(2px);
+
+}
+
+
+/* button variants */
+
+.btn-primary{
+
+    padding:14px 34px;
+
+    background:var(--accent);
+
+    border-radius:6px;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,0.4);
+
+}
+
+.btn-primary:hover{
+
+    background:var(--accent-hover);
+
+}
+
+.btn-secondary{
+
+    padding:14px 34px;
+
+    background:#1e3a5a;
+
+    border-radius:6px;
+
+    color:#9cc9ff;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+}
+
+.btn-join{
+
+    background:#1e5a9c;
+
+    padding:10px 24px;
+
+}
+
+.btn-join:hover{
+
+    background:#2f78c7;
+
+}
+
+
+
+/* =========================================================
+   FORMS
+========================================================= */
+
+.form-group{
+
+    margin-bottom:15px;
+
+}
+
+input{
+
+    width:100%;
+
+    padding:10px;
+
+    border-radius:6px;
+
+    border:1px solid #2f6c8f;
+
+    background:#0e2436;
+
+    color:white;
+
+}
+
+input:focus{
+
+    outline:none;
+
+    border-color:var(--accent);
+
+}
+
+
+
+/* =========================================================
+   AUTH PANEL
+========================================================= */
+
+.auth-panel{
+
+    max-width:380px;
+
+    margin:auto;
+
+}
+
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.app-footer{
+
+    text-align:center;
+
+    margin-top:30px;
+
+    font-size:12px;
+
+    color:var(--text-dim);
+
+}
+
+/* =========================================================
+   LOBBY
+========================================================= */
+
+.lobby{
+
+    max-width:900px;
+    margin:auto;
+
+}
+
+.game-list{
+
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+
+}
+
+.game-card{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px;
+
+    border-radius:10px;
+
+    background:rgba(15,40,65,0.6);
+
+    border:1px solid rgba(100,180,255,0.25);
+
+    box-shadow:0 0 12px rgba(0,150,255,0.1);
+
+}
+
+.game-code{
+
+    font-family:"Orbitron";
+
+    letter-spacing:2px;
+
+    font-size:18px;
+
+}
+
+.game-meta{
+
+    margin-top:6px;
+
+    color:#9cc9ff;
+
+    font-size:14px;
+
+}
+
+.game-meta span{
+
+    margin-right:16px;
+
+}
+
+.game-status{
+
+    color:#7fffaf;
+
+}
+
+.empty-lobby{
+
+    text-align:center;
+
+    padding:30px;
+
+    color:#7fb3d5;
+
+}
+
+.lobby-footer{
+
+    margin-top:30px;
+
+    text-align:center;
+
+}
+
+
+
+/* =========================================================
+   GAME HEADER
+========================================================= */
+
+.game-info{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.connection-status{
+
+    font-size:13px;
+    color:var(--text-dim);
+
+}
+
+
+
+/* =========================================================
+   TURN INDICATOR
+========================================================= */
+
+.turn-indicator{
+
+    text-align:center;
+
+    font-family:"Orbitron";
+
+    font-size:20px;
+
+    margin:15px 0;
+
+}
+
+.turn-indicator.your-turn{
+
+    color:var(--accent);
+
+}
+
+.turn-indicator.enemy-turn{
+
+    color:var(--miss);
+
+}
+
+
+
+/* =========================================================
+   BOARDS LAYOUT
+========================================================= */
+
+.boards{
+
+    display:flex;
+
     gap:40px;
+
+    justify-content:center;
+
 }
 
 .board-container{
-    display:flex;
-    flex-direction:column;
+
+    text-align:center;
+
 }
+
+.board-container h3{
+
+    font-family:"Orbitron";
+
+    font-size:15px;
+
+    margin-bottom:10px;
+
+}
+
+
+
+/* =========================================================
+   BOARD GRID
+========================================================= */
 
 #player-board,
 #enemy-board{
+
     display:grid;
-    grid-template-columns: repeat(10,40px);
-    grid-gap:3px;
+
+    grid-template-columns:30px repeat(10,32px);
+
+    grid-template-rows:30px repeat(10,32px);
+
+    gap:2px;
+
+    background:var(--board-line);
+
+    padding:4px;
+
+    border-radius:6px;
+
 }
 
-.cell{
-    width:40px;
-    height:40px;
-    background:#eee;
-    border:1px solid #444;
+.game-board{
+
+    box-shadow:
+        0 0 15px rgba(0,180,255,0.2),
+        inset 0 0 15px rgba(0,180,255,0.1);
+
+}
+
+
+
+/* =========================================================
+   BOARD LABELS
+========================================================= */
+
+.board-label{
+
     display:flex;
     align-items:center;
     justify-content:center;
+
+    font-size:12px;
+
+    color:#7fb3d5;
+
+    font-family:"Orbitron";
+
+}
+
+.board-corner{
+
+    width:30px;
+    height:30px;
+
+}
+
+
+
+/* =========================================================
+   CELLS
+========================================================= */
+
+.cell{
+
+    width:32px;
+    height:32px;
+
+    background:var(--board-water);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    position:relative;
+
+    transition:
+        background 0.2s,
+        transform 0.15s,
+        box-shadow 0.2s;
+
+}
+
+
+
+/* enemy hover */
+
+#enemy-board .cell:hover{
+
+    background:rgba(255,140,50,0.25);
+
+    box-shadow:
+        0 0 8px rgba(255,140,50,0.6);
+
+    cursor:crosshair;
+
+}
+
+
+
+/* =========================================================
+   CELL STATES
+========================================================= */
+
+.cell.ship{
+
+    background:#5c6b75;
+
+}
+
+.cell.miss{
+
+    background:var(--miss);
+
+    box-shadow:
+        inset 0 0 6px rgba(255,255,255,0.4);
+
+}
+
+.cell.hit{
+
+    background:var(--hit);
+
+    box-shadow:
+        0 0 10px var(--hit),
+        0 0 20px rgba(255,200,0,0.5);
+
+}
+
+.cell.sunk{
+
+    background:#c0392b;
+
+    box-shadow:
+        0 0 8px rgba(255,0,0,0.7),
+        inset 0 0 8px rgba(0,0,0,0.6);
+
+}
+
+
+
+/* ship hit visual */
+
+.cell.ship.hit{
+
+    background:#ff5c5c;
+
+    box-shadow:
+        0 0 8px rgba(255,80,80,0.8),
+        inset 0 0 6px rgba(255,0,0,0.6);
+
+}
+
+.cell.ship.hit::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:60%;
+    height:3px;
+
+    background:#2a2a2a;
+
+    transform:rotate(25deg);
+
+}
+
+
+
+/* =========================================================
+   EVENT LOG
+========================================================= */
+
+.event-log{
+
+    margin-top:30px;
+
+}
+
+.event-list{
+
+    font-size:13px;
+
+    max-height:150px;
+
+    overflow-y:auto;
+
+    line-height:1.6;
+
+    color:var(--text-dim);
+
+}
+
+.event-entry{
+
+    padding:4px 0;
+
+    font-family:"Orbitron";
+
+    font-size:12px;
+
+    letter-spacing:1px;
+
+}
+
+.event-fire{
+
+    color:#ff8c32;
+
+}
+
+.event-hit{
+
+    color:#f4b942;
+
+    text-shadow:
+        0 0 6px rgba(255,200,0,0.6);
+
+}
+
+.event-miss{
+
+    color:#7fb3d5;
+
+}
+
+.event-join{
+
+    color:#2ecc71;
+
+}
+
+
+
+/* =========================================================
+   LANDING
+========================================================= */
+
+.landing{
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    height:75vh;
+
+}
+
+.landing-panel{
+
+    text-align:center;
+
+    padding:70px 80px;
+
+    border-radius:14px;
+
+    background:rgba(5,20,35,0.75);
+
+    border:1px solid rgba(100,180,255,0.25);
+
+    backdrop-filter:blur(6px);
+
+    box-shadow:
+        0 0 40px rgba(0,150,255,0.25),
+        inset 0 0 25px rgba(0,80,150,0.15);
+
+}
+
+.landing-title{
+
+    font-family:"Orbitron";
+
+    font-size:56px;
+
+    letter-spacing:8px;
+
+    margin-bottom:12px;
+
+    color:#9fdcff;
+
+    text-shadow:
+        0 0 6px rgba(0,200,255,0.6),
+        0 0 20px rgba(0,200,255,0.4);
+
+}
+
+.landing-subtitle{
+
+    color:#7fb3d5;
+
+    margin-bottom:40px;
+
+    font-size:18px;
+
+}
+
+.landing-actions{
+
+    display:flex;
+    justify-content:center;
+    gap:24px;
+
+}
+
+
+
+/* =========================================================
+   LANDING BACKGROUND
+========================================================= */
+
+.landing-bg{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+        radial-gradient(circle at center, rgba(0,160,220,0.12), transparent 60%),
+        repeating-linear-gradient(
+            0deg,
+            rgba(0,180,255,0.08) 0px,
+            rgba(0,180,255,0.08) 1px,
+            transparent 1px,
+            transparent 60px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            rgba(0,180,255,0.08) 0px,
+            rgba(0,180,255,0.08) 1px,
+            transparent 1px,
+            transparent 60px
+        );
+
+    z-index:-1;
+
+}
+
+
+
+/* =========================================================
+   RADAR SWEEP
+========================================================= */
+
+.radar-sweep{
+
+    position:fixed;
+
+    inset:-150%;
+
+    background:conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        transparent 330deg,
+        rgba(0,255,200,0.15) 340deg,
+        rgba(0,255,200,0.35) 350deg,
+        transparent 360deg
+    );
+
+    mix-blend-mode:screen;
+
+    animation:radarRotate 10s linear infinite;
+
+    pointer-events:none;
+
+    z-index:-1;
+
+}
+
+@keyframes radarRotate{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+/* =================================
+   RADAR CONTACTS
+================================= */
+
+.radar-contacts{
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    z-index:-1;
+
+}
+
+
+
+/* contact blip */
+
+.radar-contacts::before,
+.radar-contacts::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background: rgba(255,140,50,0.9);
+
+    box-shadow:
+        0 0 8px rgba(255,140,50,0.9),
+        0 0 18px rgba(255,140,50,0.45);
+
+    animation:radarPing 4s infinite;
+
+}
+
+
+/* posiciones aleatorias */
+
+.radar-contacts::before{
+
+    top:25%;
+    left:82%;
+
+}
+
+.radar-contacts::after{
+
+    top:75%;
+    left:20%;
+
+    animation-delay:2s;
+
+}
+
+
+
+/* pulse */
+
+@keyframes radarPing{
+
+    0%{
+        transform:scale(0.6);
+        opacity:0;
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    100%{
+        transform:scale(2.5);
+        opacity:0;
+    }
+
+}
+
+/* =========================================================
+   BATTLESHIPS UI THEME
+   Naval Tactical Dark UI
+========================================================= */
+
+
+/* =========================================================
+   FONTS
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap');
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+
+    --bg-main: #0b1c2c;
+    --bg-panel: #12283a;
+    --bg-panel-soft: #152f45;
+
+    --board-water: #1a3b55;
+    --board-line: #2f6c8f;
+
+    --accent: #ff8c32;
+    --accent-hover: #ff9d4d;
+
+    --hit: #f4b942;
+    --miss: #7fb3d5;
+    --sunk: #e63946;
+
+    --success: #2ecc71;
+
+    --text-main: #e6edf3;
+    --text-dim: #9fb3c8;
+
+}
+
+
+/* =========================================================
+   RESET / GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+    padding: 0;
+
+    font-family: "Inter", sans-serif;
+
+    color: var(--text-main);
+
+    background:
+        radial-gradient(circle at top, #112c42, #081521);
+
+    min-height: 100vh;
+
+}
+
+
+
+/* =========================================================
+   APP SHELL
+========================================================= */
+
+.app-container{
+
+    max-width:1100px;
+    margin:auto;
+
+    padding:20px;
+
+}
+
+main{
+
+    min-height:60vh;
+
+}
+
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.app-header{
+
+    position:sticky;
+    top:0;
+
+    background:rgba(10,25,40,0.9);
+
+    border-bottom:1px solid rgba(100,180,255,0.25);
+
+    backdrop-filter:blur(6px);
+
+    margin-bottom:30px;
+
+}
+
+.nav-container{
+
+    max-width:1100px;
+    margin:auto;
+
+    padding:14px 20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+.app-title a{
+
+    font-family:"Orbitron";
+
+    font-size:22px;
+
+    letter-spacing:4px;
+
+    text-decoration:none;
+
+    color:#9fdcff;
+
+}
+
+.app-title a:hover{
+
+    text-shadow:0 0 6px rgba(0,200,255,0.6);
+
+}
+
+
+
+/* =========================================================
+   USER AREA
+========================================================= */
+
+.nav-user{
+
+    display:flex;
+    align-items:center;
+
+    gap:16px;
+
+}
+
+.nav-username{
+
+    color:#7fb3d5;
+    font-size:14px;
+
+}
+
+.logout-form{
+
+    margin:0;
+
+}
+
+.nav-logout{
+
+    padding:8px 16px;
+    font-size:13px;
+
+}
+
+
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.panel{
+
+    background:var(--bg-panel);
+
+    border:1px solid var(--board-line);
+
+    border-radius:8px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.6);
+
+}
+
+.panel-title{
+
+    font-family:"Orbitron";
+
+    font-size:16px;
+
+    margin-bottom:12px;
+
+    color:var(--accent);
+
+}
+
+.panel-description{
+
+    color:#7fb3d5;
+
+    margin-bottom:20px;
+
+}
+
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn{
+
+    background:linear-gradient(
+        var(--accent-hover),
+        var(--accent)
+    );
+
+    border:1px solid #d46d1f;
+
+    border-radius:6px;
+
+    padding:10px 16px;
+
+    font-family:"Orbitron";
+
+    font-size:14px;
+
+    color:#fff;
+
     cursor:pointer;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.3),
+        0 4px 8px rgba(0,0,0,0.6);
+
+    transition:all 0.15s ease;
+
 }
 
-.hit{
-    background:red;
+.btn:hover{
+
+    filter:brightness(1.1);
+
 }
 
-.miss{
-    background:lightblue;
+.btn:active{
+
+    transform:translateY(2px);
+
 }
 
-.ship{
-    background:#666;
+
+/* button variants */
+
+.btn-primary{
+
+    padding:14px 34px;
+
+    background:var(--accent);
+
+    border-radius:6px;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,0.4);
+
+}
+
+.btn-primary:hover{
+
+    background:var(--accent-hover);
+
+}
+
+.btn-secondary{
+
+    padding:14px 34px;
+
+    background:#1e3a5a;
+
+    border-radius:6px;
+
+    color:#9cc9ff;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+}
+
+.btn-join{
+
+    background:#1e5a9c;
+
+    padding:10px 24px;
+
+}
+
+.btn-join:hover{
+
+    background:#2f78c7;
+
+}
+
+
+
+/* =========================================================
+   FORMS
+========================================================= */
+
+.form-group{
+
+    margin-bottom:15px;
+
+}
+
+input{
+
+    width:100%;
+
+    padding:10px;
+
+    border-radius:6px;
+
+    border:1px solid #2f6c8f;
+
+    background:#0e2436;
+
+    color:white;
+
+}
+
+input:focus{
+
+    outline:none;
+
+    border-color:var(--accent);
+
+}
+
+
+
+/* =========================================================
+   AUTH PANEL
+========================================================= */
+
+.auth-panel{
+
+    max-width:380px;
+
+    margin:auto;
+
+}
+
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.app-footer{
+
+    text-align:center;
+
+    margin-top:30px;
+
+    font-size:12px;
+
+    color:var(--text-dim);
+
+}
+
+/* =========================================================
+   BATTLESHIPS UI THEME
+   Naval Tactical Dark UI
+========================================================= */
+
+
+/* =========================================================
+   FONTS
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap');
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+
+    --bg-main: #0b1c2c;
+    --bg-panel: #12283a;
+    --bg-panel-soft: #152f45;
+
+    --board-water: #1a3b55;
+    --board-line: #2f6c8f;
+
+    --accent: #ff8c32;
+    --accent-hover: #ff9d4d;
+
+    --hit: #f4b942;
+    --miss: #7fb3d5;
+    --sunk: #e63946;
+
+    --success: #2ecc71;
+
+    --text-main: #e6edf3;
+    --text-dim: #9fb3c8;
+
+}
+
+
+/* =========================================================
+   RESET / GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+    padding: 0;
+
+    font-family: "Inter", sans-serif;
+
+    color: var(--text-main);
+
+    background:
+        radial-gradient(circle at top, #112c42, #081521);
+
+    min-height: 100vh;
+
+}
+
+
+
+/* =========================================================
+   APP SHELL
+========================================================= */
+
+.app-container{
+
+    max-width:1100px;
+    margin:auto;
+
+    padding:20px;
+
+}
+
+main{
+
+    min-height:60vh;
+
+}
+
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.app-header{
+
+    position:sticky;
+    top:0;
+
+    background:rgba(10,25,40,0.9);
+
+    border-bottom:1px solid rgba(100,180,255,0.25);
+
+    backdrop-filter:blur(6px);
+
+    margin-bottom:30px;
+
+}
+
+.nav-container{
+
+    max-width:1100px;
+    margin:auto;
+
+    padding:14px 20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+.app-title a{
+
+    font-family:"Orbitron";
+
+    font-size:22px;
+
+    letter-spacing:4px;
+
+    text-decoration:none;
+
+    color:#9fdcff;
+
+}
+
+.app-title a:hover{
+
+    text-shadow:0 0 6px rgba(0,200,255,0.6);
+
+}
+
+
+
+/* =========================================================
+   USER AREA
+========================================================= */
+
+.nav-user{
+
+    display:flex;
+    align-items:center;
+
+    gap:16px;
+
+}
+
+.nav-username{
+
+    color:#7fb3d5;
+    font-size:14px;
+
+}
+
+.logout-form{
+
+    margin:0;
+
+}
+
+.nav-logout{
+
+    padding:8px 16px;
+    font-size:13px;
+
+}
+
+
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.panel{
+
+    background:var(--bg-panel);
+
+    border:1px solid var(--board-line);
+
+    border-radius:8px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.6);
+
+}
+
+.panel-title{
+
+    font-family:"Orbitron";
+
+    font-size:16px;
+
+    margin-bottom:12px;
+
+    color:var(--accent);
+
+}
+
+.panel-description{
+
+    color:#7fb3d5;
+
+    margin-bottom:20px;
+
+}
+
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn{
+
+    background:linear-gradient(
+        var(--accent-hover),
+        var(--accent)
+    );
+
+    border:1px solid #d46d1f;
+
+    border-radius:6px;
+
+    padding:10px 16px;
+
+    font-family:"Orbitron";
+
+    font-size:14px;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.3),
+        0 4px 8px rgba(0,0,0,0.6);
+
+    transition:all 0.15s ease;
+
+}
+
+.btn:hover{
+
+    filter:brightness(1.1);
+
+}
+
+.btn:active{
+
+    transform:translateY(2px);
+
+}
+
+
+/* button variants */
+
+.btn-primary{
+
+    padding:14px 34px;
+
+    background:var(--accent);
+
+    border-radius:6px;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,0.4);
+
+}
+
+.btn-primary:hover{
+
+    background:var(--accent-hover);
+
+}
+
+.btn-secondary{
+
+    padding:14px 34px;
+
+    background:#1e3a5a;
+
+    border-radius:6px;
+
+    color:#9cc9ff;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+}
+
+.btn-join{
+
+    background:#1e5a9c;
+
+    padding:10px 24px;
+
+}
+
+.btn-join:hover{
+
+    background:#2f78c7;
+
+}
+
+
+
+/* =========================================================
+   FORMS
+========================================================= */
+
+.form-group{
+
+    margin-bottom:15px;
+
+}
+
+input{
+
+    width:100%;
+
+    padding:10px;
+
+    border-radius:6px;
+
+    border:1px solid #2f6c8f;
+
+    background:#0e2436;
+
+    color:white;
+
+}
+
+input:focus{
+
+    outline:none;
+
+    border-color:var(--accent);
+
+}
+
+
+
+/* =========================================================
+   AUTH PANEL
+========================================================= */
+
+.auth-panel{
+
+    max-width:380px;
+
+    margin:auto;
+
+}
+
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.app-footer{
+
+    text-align:center;
+
+    margin-top:30px;
+
+    font-size:12px;
+
+    color:var(--text-dim);
+
+}
+
+/* =========================================================
+   LOBBY
+========================================================= */
+
+.lobby{
+
+    max-width:900px;
+    margin:auto;
+
+}
+
+.game-list{
+
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+
+}
+
+.game-card{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px;
+
+    border-radius:10px;
+
+    background:rgba(15,40,65,0.6);
+
+    border:1px solid rgba(100,180,255,0.25);
+
+    box-shadow:0 0 12px rgba(0,150,255,0.1);
+
+}
+
+.game-code{
+
+    font-family:"Orbitron";
+
+    letter-spacing:2px;
+
+    font-size:18px;
+
+}
+
+.game-meta{
+
+    margin-top:6px;
+
+    color:#9cc9ff;
+
+    font-size:14px;
+
+}
+
+.game-meta span{
+
+    margin-right:16px;
+
+}
+
+.game-status{
+
+    color:#7fffaf;
+
+}
+
+.empty-lobby{
+
+    text-align:center;
+
+    padding:30px;
+
+    color:#7fb3d5;
+
+}
+
+.lobby-footer{
+
+    margin-top:30px;
+
+    text-align:center;
+
+}
+
+
+
+/* =========================================================
+   GAME HEADER
+========================================================= */
+
+.game-info{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.connection-status{
+
+    font-size:13px;
+    color:var(--text-dim);
+
+}
+
+
+
+/* =========================================================
+   TURN INDICATOR
+========================================================= */
+
+.turn-indicator{
+
+    text-align:center;
+
+    font-family:"Orbitron";
+
+    font-size:20px;
+
+    margin:15px 0;
+
+}
+
+.turn-indicator.your-turn{
+
+    color:var(--accent);
+
+}
+
+.turn-indicator.enemy-turn{
+
+    color:var(--miss);
+
+}
+
+
+
+/* =========================================================
+   BOARDS LAYOUT
+========================================================= */
+
+.boards{
+
+    display:flex;
+
+    gap:40px;
+
+    justify-content:center;
+
+}
+
+.board-container{
+
+    text-align:center;
+
+}
+
+.board-container h3{
+
+    font-family:"Orbitron";
+
+    font-size:15px;
+
+    margin-bottom:10px;
+
+}
+
+
+
+/* =========================================================
+   BOARD GRID
+========================================================= */
+
+#player-board,
+#enemy-board{
+
+    display:grid;
+
+    grid-template-columns:30px repeat(10,32px);
+
+    grid-template-rows:30px repeat(10,32px);
+
+    gap:2px;
+
+    background:var(--board-line);
+
+    padding:4px;
+
+    border-radius:6px;
+
+}
+
+.game-board{
+
+    box-shadow:
+        0 0 15px rgba(0,180,255,0.2),
+        inset 0 0 15px rgba(0,180,255,0.1);
+
+}
+
+
+
+/* =========================================================
+   BOARD LABELS
+========================================================= */
+
+.board-label{
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:12px;
+
+    color:#7fb3d5;
+
+    font-family:"Orbitron";
+
+}
+
+.board-corner{
+
+    width:30px;
+    height:30px;
+
+}
+
+
+
+/* =========================================================
+   CELLS
+========================================================= */
+
+.cell{
+
+    width:32px;
+    height:32px;
+
+    background:var(--board-water);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    position:relative;
+
+    transition:
+        background 0.2s,
+        transform 0.15s,
+        box-shadow 0.2s;
+
+}
+
+
+
+/* enemy hover */
+
+#enemy-board .cell:hover{
+
+    background:rgba(255,140,50,0.25);
+
+    box-shadow:
+        0 0 8px rgba(255,140,50,0.6);
+
+    cursor:crosshair;
+
+}
+
+
+
+/* =========================================================
+   CELL STATES
+========================================================= */
+
+.cell.ship{
+
+    background:#5c6b75;
+
+}
+
+.cell.miss{
+
+    background:var(--miss);
+
+    box-shadow:
+        inset 0 0 6px rgba(255,255,255,0.4);
+
+}
+
+.cell.hit{
+
+    background:var(--hit);
+
+    box-shadow:
+        0 0 10px var(--hit),
+        0 0 20px rgba(255,200,0,0.5);
+
+}
+
+.cell.sunk{
+
+    background:#c0392b;
+
+    box-shadow:
+        0 0 8px rgba(255,0,0,0.7),
+        inset 0 0 8px rgba(0,0,0,0.6);
+
+}
+
+
+
+/* ship hit visual */
+
+.cell.ship.hit{
+
+    background:#ff5c5c;
+
+    box-shadow:
+        0 0 8px rgba(255,80,80,0.8),
+        inset 0 0 6px rgba(255,0,0,0.6);
+
+}
+
+.cell.ship.hit::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:60%;
+    height:3px;
+
+    background:#2a2a2a;
+
+    transform:rotate(25deg);
+
+}
+
+
+
+/* =========================================================
+   EVENT LOG
+========================================================= */
+
+.event-log{
+
+    margin-top:30px;
+
+}
+
+.event-list{
+
+    font-size:13px;
+
+    max-height:150px;
+
+    overflow-y:auto;
+
+    line-height:1.6;
+
+    color:var(--text-dim);
+
+}
+
+.event-entry{
+
+    padding:4px 0;
+
+    font-family:"Orbitron";
+
+    font-size:12px;
+
+    letter-spacing:1px;
+
+}
+
+.event-fire{
+
+    color:#ff8c32;
+
+}
+
+.event-hit{
+
+    color:#f4b942;
+
+    text-shadow:
+        0 0 6px rgba(255,200,0,0.6);
+
+}
+
+.event-miss{
+
+    color:#7fb3d5;
+
+}
+
+.event-join{
+
+    color:#2ecc71;
+
+}
+
+
+
+/* =========================================================
+   LANDING
+========================================================= */
+
+.landing{
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    height:75vh;
+
+}
+
+.landing-panel{
+
+    text-align:center;
+
+    padding:70px 80px;
+
+    border-radius:14px;
+
+    background:rgba(5,20,35,0.75);
+
+    border:1px solid rgba(100,180,255,0.25);
+
+    backdrop-filter:blur(6px);
+
+    box-shadow:
+        0 0 40px rgba(0,150,255,0.25),
+        inset 0 0 25px rgba(0,80,150,0.15);
+
+}
+
+.landing-title{
+
+    font-family:"Orbitron";
+
+    font-size:56px;
+
+    letter-spacing:8px;
+
+    margin-bottom:12px;
+
+    color:#9fdcff;
+
+    text-shadow:
+        0 0 6px rgba(0,200,255,0.6),
+        0 0 20px rgba(0,200,255,0.4);
+
+}
+
+.landing-subtitle{
+
+    color:#7fb3d5;
+
+    margin-bottom:40px;
+
+    font-size:18px;
+
+}
+
+.landing-actions{
+
+    display:flex;
+    justify-content:center;
+    gap:24px;
+
+}
+
+
+
+/* =========================================================
+   LANDING BACKGROUND
+========================================================= */
+
+.landing-bg{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+        radial-gradient(circle at center, rgba(0,160,220,0.12), transparent 60%),
+        repeating-linear-gradient(
+            0deg,
+            rgba(0,180,255,0.08) 0px,
+            rgba(0,180,255,0.08) 1px,
+            transparent 1px,
+            transparent 60px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            rgba(0,180,255,0.08) 0px,
+            rgba(0,180,255,0.08) 1px,
+            transparent 1px,
+            transparent 60px
+        );
+
+    z-index:-1;
+
+}
+
+
+
+/* =========================================================
+   RADAR SWEEP
+========================================================= */
+
+.radar-sweep{
+
+    position:fixed;
+
+    inset:-150%;
+
+    background:conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        transparent 330deg,
+        rgba(0,255,200,0.15) 340deg,
+        rgba(0,255,200,0.35) 350deg,
+        transparent 360deg
+    );
+
+    mix-blend-mode:screen;
+
+    animation:radarRotate 10s linear infinite;
+
+    pointer-events:none;
+
+    z-index:-1;
+
+}
+
+@keyframes radarRotate{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+/* =================================
+   RADAR CONTACTS
+================================= */
+
+.radar-contacts{
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    z-index:-1;
+
+}
+
+
+
+/* contact blip */
+
+.radar-contacts::before,
+.radar-contacts::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background: rgba(255,140,50,0.9);
+
+    box-shadow:
+        0 0 8px rgba(255,140,50,0.9),
+        0 0 18px rgba(255,140,50,0.45);
+
+    animation:radarPing 4s infinite;
+
+}
+
+
+/* posiciones aleatorias */
+
+.radar-contacts::before{
+
+    top:25%;
+    left:82%;
+
+}
+
+.radar-contacts::after{
+
+    top:75%;
+    left:20%;
+
+    animation-delay:2s;
+
+}
+
+
+
+/* pulse */
+
+@keyframes radarPing{
+
+    0%{
+        transform:scale(0.6);
+        opacity:0;
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    100%{
+        transform:scale(2.5);
+        opacity:0;
+    }
+
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px){
+
+    .boards{
+        flex-direction:column;
+        align-items:center;
+        gap:30px;
+    }
+
+    .game-info{
+        flex-direction:column;
+        gap:8px;
+        text-align:center;
+    }
+
+}
+
+@media (max-width: 600px){
+
+    #player-board,
+    #enemy-board{
+
+        grid-template-columns:26px repeat(10,26px);
+        grid-template-rows:26px repeat(10,26px);
+
+    }
+
+    .cell{
+        width:26px;
+        height:26px;
+    }
+
+    .board-label{
+        font-size:10px;
+    }
+
+}
+
+@media (max-width: 600px){
+
+    .landing-panel{
+        padding:40px 30px;
+    }
+
+    .landing-title{
+        font-size:36px;
+        letter-spacing:4px;
+    }
+
+    .landing-actions{
+        flex-direction:column;
+        gap:14px;
+    }
+
 }

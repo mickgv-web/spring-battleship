@@ -5,8 +5,67 @@ let gameStatus = window.gameConfig.status;
 let boardInitialized = false;
 let currentTurnPlayerId = null;
 
-// 🔹 guardamos el board si llega antes de crear el DOM
+// guardamos board si llega antes del DOM
 let pendingBoardState = null;
+
+
+/* ===========================
+   EVENT LOG
+=========================== */
+
+function logEvent(message, type){
+
+    const log = document.getElementById("event-log");
+
+    if(!log){
+        return;
+    }
+
+    const entry = document.createElement("div");
+
+    entry.classList.add("event-entry");
+
+    if(type){
+        entry.classList.add("event-" + type.toLowerCase());
+    }
+
+    entry.textContent = message;
+
+    log.prepend(entry);
+
+}
+
+
+/* ===========================
+   TURN INDICATOR
+=========================== */
+
+function updateTurnIndicator(){
+
+    const status = document.getElementById("game-status");
+
+    if(!status){
+        return;
+    }
+
+    if(currentTurnPlayerId === playerId){
+
+        status.textContent = "🟢 YOUR TURN — Fire!";
+        status.className = "turn-indicator your-turn";
+
+    } else {
+
+        status.textContent = "⏳ ENEMY TURN — Waiting...";
+        status.className = "turn-indicator enemy-turn";
+
+    }
+
+}
+
+
+/* ===========================
+   CELL CLICK
+=========================== */
 
 function handleCellClick(x, y){
 
@@ -27,18 +86,29 @@ function handleCellClick(x, y){
         return;
     }
 
+    logEvent("Firing at (" + x + "," + y + ")...");
+
     sendFire(gameId, x, y);
 
 }
+
+
+/* ===========================
+   SERVER EVENTS
+=========================== */
 
 function handleServerEvent(data){
 
     console.log("SERVER EVENT:", data);
 
-    // 🔹 jugador se unió
+
+    /* PLAYER JOINED */
+
     if(data.type === "PLAYER_JOINED"){
 
         gameStatus = "SETUP";
+
+        logEvent("Opponent joined the game");
 
         startGame();
 
@@ -46,14 +116,19 @@ function handleServerEvent(data){
 
     }
 
-    // 🔹 estado inicial del tablero
+
+    /* BOARD STATE */
+
     if(data.board){
 
         console.log("BOARD STATE RECEIVED");
 
         currentTurnPlayerId = data.currentTurnPlayerId;
 
-        // si el tablero aún no existe lo guardamos
+        logEvent("Board synchronized");
+
+        updateTurnIndicator();
+
         if(!boardInitialized){
 
             pendingBoardState = data.board;
@@ -68,39 +143,65 @@ function handleServerEvent(data){
 
     }
 
-    // 🔹 actualización de turno
+
+    /* TURN UPDATE */
+
     if(data.nextTurnPlayerId !== undefined){
 
         currentTurnPlayerId = data.nextTurnPlayerId;
 
+        updateTurnIndicator();
+
     }
 
-    // 🔹 evento de disparo
+
+    /* FIRE EVENT */
+
     if(data.x !== undefined){
+
+        const coords = "(" + data.x + "," + data.y + ")";
 
         if(data.shooterId === playerId){
 
             updateCell("enemy-board", data.x, data.y, data.result);
 
+            logEvent("You fired at " + coords);
+
         } else {
 
             updateCell("player-board", data.x, data.y, data.result);
 
+            logEvent("Enemy fired at " + coords);
+
         }
+
+        logEvent("Result: " + data.result);
 
     }
 
 }
+
+
+/* ===========================
+   WAITING SCREEN
+=========================== */
 
 function showWaiting(){
 
     const status = document.getElementById("game-status");
 
     if(status){
-        status.innerHTML = "Waiting for opponent...";
+
+        status.textContent = "Waiting for opponent...";
+
     }
 
 }
+
+
+/* ===========================
+   START GAME
+=========================== */
 
 function startGame(){
 
@@ -111,7 +212,7 @@ function startGame(){
     const status = document.getElementById("game-status");
 
     if(status){
-        status.innerHTML = "";
+        status.textContent = "";
     }
 
     createBoard("player-board", null);
@@ -120,7 +221,6 @@ function startGame(){
 
     boardInitialized = true;
 
-    // 🔹 si el estado del tablero llegó antes lo pintamos ahora
     if(pendingBoardState){
 
         renderBoard("player-board", pendingBoardState);
@@ -130,6 +230,11 @@ function startGame(){
     }
 
 }
+
+
+/* ===========================
+   INIT
+=========================== */
 
 function initGame(){
 
@@ -143,7 +248,6 @@ function initGame(){
 
     }
 
-    // conectar websocket después de tener el DOM listo
     connectWebSocket(gameId, handleServerEvent);
 
 }

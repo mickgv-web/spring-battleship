@@ -48,22 +48,39 @@ public class Board {
         return true;
     }
 
+
+
     public Cell fire(int x, int y) {
 
         Cell cell = grid[x][y];
 
         if (cell == Cell.SHIP) {
+
             grid[x][y] = Cell.HIT;
+
+            if (isShipSunk(x, y)) {
+
+                boolean[][] visited = new boolean[SIZE][SIZE];
+
+                markShipAsSunk(x, y, visited);
+
+                return Cell.SUNK;
+            }
+
             return Cell.HIT;
         }
 
         if (cell == Cell.EMPTY) {
+
             grid[x][y] = Cell.MISS;
+
             return Cell.MISS;
         }
 
         return cell;
     }
+
+
 
     public boolean allShipsSunk() {
 
@@ -80,9 +97,13 @@ public class Board {
         return true;
     }
 
+
+
     public Cell[][] getGrid() {
         return grid;
     }
+
+
 
     public boolean isShipSunk(int x, int y) {
 
@@ -94,6 +115,8 @@ public class Board {
 
         return !hasRemainingShipCells(x, y, visited);
     }
+
+
 
     private boolean hasRemainingShipCells(int x, int y, boolean[][] visited) {
 
@@ -114,6 +137,28 @@ public class Board {
                 || hasRemainingShipCells(x, y + 1, visited)
                 || hasRemainingShipCells(x, y - 1, visited);
     }
+
+
+
+    private void markShipAsSunk(int x, int y, boolean[][] visited) {
+
+        if (!isInside(x, y)) return;
+
+        if (visited[x][y]) return;
+
+        if (grid[x][y] != Cell.HIT) return;
+
+        visited[x][y] = true;
+
+        grid[x][y] = Cell.SUNK;
+
+        markShipAsSunk(x + 1, y, visited);
+        markShipAsSunk(x - 1, y, visited);
+        markShipAsSunk(x, y + 1, visited);
+        markShipAsSunk(x, y - 1, visited);
+    }
+
+
 
     private boolean isInside(int x, int y) {
 
